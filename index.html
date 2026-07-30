@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concrete & Material Estimator | Pro Slab Calculator</title>
+    <meta name="description" content="Calculate concrete slab volume in cubic yards, cubic feet, and bag counts (80lb/60lb). Fast, modern design optimized for high readability.">
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'Inter', 'sans-serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        /* Custom print styling */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            .print-card {
+                box-shadow: none !important;
+                border: 1px solid #e2e8f0 !important;
+                margin: 0 !important;
+                padding: 15px !important;
+            }
+        }
+        /* Alpine x-cloak style */
+        [x-cloak] { display: none !important; }
+    </style>
+    <!-- JSON-LD Structured Data Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "http://localhost:8000/#webapp",
+          "url": "http://localhost:8000/",
+          "name": "Concrete & Material Estimator | Pro Slab Calculator",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "description": "Calculate concrete slab volume in cubic yards, cubic feet, and dry bag counts (80lb/60lb). Fast, Neubrutalism design optimized for high-contrast outdoor readability.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "http://localhost:8000/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How many 80lb bags of concrete are in a cubic yard?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "There are exactly 45 bags of 80lb dry mix concrete in one cubic yard."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the standard depth for a concrete patio or driveway?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Patios, sidewalks, and shed pads typically require a 4-inch depth. Driveways, parking pads, and heavy machinery support require a minimum of 6 inches."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Why should I add a 10% waste buffer to my concrete calculations?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Adding a 10% waste buffer is a building standard to account for subgrade variations, spills, uneven surfaces, and cuts."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+</head>
+<body 
+    x-data="{
+        darkMode: localStorage.getItem('darkMode') === 'true',
+        mode: 'slab',
+        length: 10,
+        width: 10,
+        depth: 4,
+        curbLength: 10,
+        curbHeight: 6,
+        curbThickness: 6,
+        gutterWidth: 12,
+        gutterThickness: 6,
+        diameter: 10,
+        circularDepth: 4,
+        quantity: 1,
+        wasteBuffer: true,
+        bagCost80: 6.50,
+        bagCost60: 5.20,
+        costPerYard: 145.00,
+        
+        toggleDarkMode() {
+            this.darkMode = !this.darkMode;
+            localStorage.setItem('darkMode', this.darkMode);
+        },
+        
+        applyPreset(l, w, d) {
+            this.length = l;
+            this.width = w;
+            this.depth = d;
+        },
+        
+        get volumeCubicFeet() {
+            if (this.mode === 'slab') {
+                let base = this.length * this.width * (this.depth / 12);
+                return isNaN(base) ? 0 : base;
+            } else if (this.mode === 'curb') {
+                let area = ((this.curbHeight * this.curbThickness) + (this.gutterWidth * this.gutterThickness)) / 144;
+                let base = area * this.curbLength;
+                return isNaN(base) ? 0 : base;
+            } else if (this.mode === 'circular') {
+                let radius = this.diameter / 2;
+                let base = Math.PI * Math.pow(radius, 2) * (this.circularDepth / 12) * this.quantity;
+                return isNaN(base) ? 0 : base;
+            }
+            return 0;
+        },
+        
+        get volumeCubicYards() {
+            let base = this.volumeCubicFeet / 27;
+            if (isNaN(base)) return 0;
+            return this.wasteBuffer ? base * 1.10 : base;
+        },
+        
+        get totalCubicFeet() {
+            return this.volumeCubicYards * 27;
+        },
+        
+        get bags80lb() {
+            return Math.ceil(this.volumeCubicYards * 45);
+        },
+        
+        get bags60lb() {
+            return Math.ceil(this.volumeCubicYards * 60);
+        },
+        
+        get totalCost80lb() {
+            return this.bags80lb * this.bagCost80;
+        },
+        
+        get totalCost60lb() {
+            return this.bags60lb * this.bagCost60;
+        },
+        
+        get totalCostYard() {
+            return this.volumeCubicYards * this.costPerYard;
+        },
+
+        get avgCostMin() {
+            return this.volumeCubicYards * 125;
+        },
+
+        get avgCostMax() {
+            return this.volumeCubicYards * 150;
+        },
+        
+        printList() {
+            window.print();
+        }
+    }"
+    :class="darkMode ? 'dark bg-slate-900 text-white' : 'bg-slate-50 text-slate-900'"
+    class="font-sans min-h-screen flex flex-col selection:bg-orange-500 selection:text-white transition-colors duration-200"
+>
+
+    <!-- Top Navigation Bar -->
+    <header 
+        class="no-print border-b py-4 px-6 sticky top-0 z-50 shadow-sm transition-colors duration-200"
+        :class="darkMode ? 'border-slate-700 bg-slate-800/90 text-white' : 'border-slate-200 bg-white/80 text-slate-900'"
+        style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);"
+    >
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center font-black text-white text-xl shadow-sm">
+                    C
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight flex items-center gap-2" :class="darkMode ? 'text-white' : 'text-slate-900'">
+                        CONCRETE ESTIMATOR <span class="bg-orange-100 dark:bg-orange-950/50 text-orange-700 dark:text-orange-400 text-xs font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">US Standard</span>
+                    </h1>
+                    <p class="text-xs" :class="darkMode ? 'text-slate-400' : 'text-slate-500'">Precision slab & material calculator</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <!-- Theme Toggle Button -->
+                <button 
+                    @click="toggleDarkMode()" 
+                    class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all border border-slate-200 dark:border-slate-600 flex items-center justify-center shadow-sm"
+                    aria-label="Toggle dark mode"
+                >
+                    <!-- Sun Icon (visible in Dark Mode) -->
+                    <span x-show="darkMode" x-cloak>☀️</span>
+                    <!-- Moon Icon (visible in Light Mode) -->
+                    <span x-show="!darkMode" x-cloak>🌙</span>
+                </button>
+                <span class="text-xs font-medium" :class="darkMode ? 'text-slate-400' : 'text-slate-500'">System Live Status</span>
+                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- [FUTURE AD: LEFT SKYSCRAPER GOES HERE] -->
+    <!-- [FUTURE AD: RIGHT SKYSCRAPER GOES HERE] -->
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+        <!-- [FUTURE AD: TOP BANNER GOES HERE] -->
+
+    <!-- Print-Only Shopping List Header -->
+    <div class="hidden print-only mb-6 text-black">
+        <h2 class="text-3xl font-black border-b-2 border-slate-300 pb-2">CONCRETE ESTIMATION SHOPPING LIST</h2>
+        <p class="text-sm font-mono mt-2 text-slate-600">Generated on: <span x-text="new Date().toLocaleDateString()"></span></p>
+    </div>
+
+    <!-- Mode Selection Tabs -->
+    <div class="flex border border-slate-200 dark:border-slate-700 mb-6 bg-slate-100/80 dark:bg-slate-950 p-1.5 rounded-xl max-w-xl mx-auto no-print">
+        <button 
+            @click="mode = 'slab'" 
+            class="flex-1 py-2.5 px-4 rounded-lg text-sm font-bold transition-all duration-200"
+            :class="mode === 'slab' ? 'bg-white dark:bg-slate-800 text-orange-600 dark:text-orange-400 shadow-sm' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'"
+        >
+            Slab
+        </button>
+        <button 
+            @click="mode = 'curb'" 
+            class="flex-1 py-2.5 px-4 rounded-lg text-sm font-bold transition-all duration-200"
+            :class="mode === 'curb' ? 'bg-white dark:bg-slate-800 text-orange-600 dark:text-orange-400 shadow-sm' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'"
+        >
+            Curb & Gutter
+        </button>
+        <button 
+            @click="mode = 'circular'" 
+            class="flex-1 py-2.5 px-4 rounded-lg text-sm font-bold transition-all duration-200"
+            :class="mode === 'circular' ? 'bg-white dark:bg-slate-800 text-orange-600 dark:text-orange-400 shadow-sm' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'"
+        >
+            Circular Slab
+        </button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- LEFT COLUMN: Inputs & Presets (7 cols) -->
+        <section class="lg:col-span-7 space-y-6 no-print">
+            
+            <!-- Quick Presets (Slab Mode Only) -->
+            <div x-show="mode === 'slab'" class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 transition-colors duration-200">
+                <h3 class="text-sm font-bold tracking-wide uppercase text-slate-800 dark:text-slate-200 pb-2 mb-4 flex items-center gap-2 border-b border-slate-100 dark:border-slate-700">
+                    ⚡ Quick Size Presets
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button 
+                        id="preset-patio"
+                        @click="applyPreset(10, 10, 4)"
+                        class="w-full text-left p-4 rounded-xl border transition-all duration-200 flex flex-col justify-between"
+                        :class="length == 10 && width == 10 && depth == 4 
+                            ? 'border-orange-500 bg-orange-50/50 dark:bg-orange-950/20 text-orange-950 dark:text-orange-300 shadow-sm ring-1 ring-orange-500/20' 
+                            : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600'"
+                    >
+                        <span class="text-xs font-semibold uppercase text-slate-400 dark:text-slate-500 tracking-wider">Patio Slab</span>
+                        <span class="text-lg font-bold text-slate-900 dark:text-white mt-1">10' x 10'</span>
+                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">4" Depth</span>
+                    </button>
+                    <button 
+                        id="preset-shed"
+                        @click="applyPreset(12, 12, 4)"
+                        class="w-full text-left p-4 rounded-xl border transition-all duration-200 flex flex-col justify-between"
+                        :class="length == 12 && width == 12 && depth == 4 
+                            ? 'border-orange-500 bg-orange-50/50 dark:bg-orange-950/20 text-orange-950 dark:text-orange-300 shadow-sm ring-1 ring-orange-500/20' 
+                            : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600'"
+                    >
+                        <span class="text-xs font-semibold uppercase text-slate-400 dark:text-slate-500 tracking-wider">Shed Pad</span>
+                        <span class="text-lg font-bold text-slate-900 dark:text-white mt-1">12' x 12'</span>
+                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">4" Depth</span>
+                    </button>
+                    <button 
+                        id="preset-driveway"
+                        @click="applyPreset(20, 20, 6)"
+                        class="w-full text-left p-4 rounded-xl border transition-all duration-200 flex flex-col justify-between"
+                        :class="length == 20 && width == 20 && depth == 6 
+                            ? 'border-orange-500 bg-orange-50/50 dark:bg-orange-950/20 text-orange-950 dark:text-orange-300 shadow-sm ring-1 ring-orange-500/20' 
+                            : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600'"
+                    >
+                        <span class="text-xs font-semibold uppercase text-slate-400 dark:text-slate-500 tracking-wider">Driveway</span>
+                        <span class="text-lg font-bold text-slate-900 dark:text-white mt-1">20' x 20'</span>
+                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">6" Depth</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dimension Input Form -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 transition-colors duration-200">
+                <h3 class="text-sm font-bold tracking-wide uppercase text-slate-800 dark:text-slate-200 pb-2 mb-6 flex items-center gap-2 border-b border-slate-100 dark:border-slate-700">
+                    📐 Dimensions & Buffer
+                </h3>
+                
+                <div class="space-y-6">
+                    <!-- Slab Mode Inputs -->
+                    <div x-show="mode === 'slab'" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="input-length" class="block text-xs font-bold uppercase mb-2 text-slate-500 dark:text-slate-400 tracking-wider">Length (Feet)</label>
+                                <div class="relative">
+                                    <input 
+                                        id="input-length" 
+                                        type="number" 
+                                        x-model.number="length" 
+                                        min="0.1" 
+                                        step="any"
+                                        class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xl p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none"
+                                    >
+                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 font-semibold text-sm">FT</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="input-width" class="block text-xs font-bold uppercase mb-2 text-slate-500 dark:text-slate-400 tracking-wider">Width (Feet)</label>
+                                <div class="relative">
+                                    <input 
+                                        id="input-width" 
+                                        type="number" 
+                                        x-model.number="width" 
+                                        min="0.1" 
+                                        step="any"
+                                        class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xl p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none"
+                                    >
+                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 font-semibold text-sm">FT</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="input-depth" class="block text-xs font-bold uppercase mb-2 text-slate-500 dark:text-slate-400 tracking-wider">Depth (Inches)</label>
+                            <div class="relative">
+                                <input 
+                                    id="input-depth" 
+                                    type="number" 
+                                    x-model.number="depth" 
+                                    min="0.5" 
+                                    step="0.5"
+                                    class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xl p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none"
+                                >
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 font-semibold text-sm">IN</span>
+                            </div>
+                            <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">Standard slab depth is 4" (patios/sidewalks) or 6" (driveways/heavy equipment).</p>
+                        </div>
+                    </div>
+
+                    <!-- Curb & Gutter Inputs -->
+                    <div x-show="mode === 'curb'" class="space-y-6" x-cloak>
+                        <div>
+                            <label for="input-curb-length" class="block text-xs font-bold uppercase mb-2 text-slate-500 dark:text-slate-400 tracking-wider">Total Length (Feet)</label>
+                            <div class="relative">
+                                <input 
+                                    id="input-curb-length" 
+                                    type="number" 
+                                    x-model.number="curbLength" 
+                                    min="0.1" 
+                                    step="any"
+                                    class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xl p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none"
+                                >
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 font-semibold text-sm">FT</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="input-curb-height" class="block text-xs font-bold uppercase mb-2 text-slate-500 dark:text-slate-400 tracking-wider">Curb Height (Inches)</label>
+                                <div class="relative">
+                                    <input 
+                                        id="input-curb-height" 
+                                        type="number" 
+                                        x-model.number="curbHeight" 
+                                        min="0.1" 
+                                        step="any"
+                                        class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xl p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none"
+                                    >
+                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 font-semibold text-sm">IN</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="input-curb-thickness" class="block text-xs font-bold uppercase mb-2 text-slate-500 dark:text-slate-400 tracking-wider">Curb Thickness (Inches)</label>
+                                <div class="relative">
+                                    <input 
+                                        id="input-curb-thickness" 
+                                        type="number" 
+                                        x-model.number="curbThickness" 
+                                        min="0.1" 
+                                        step="any"
+                                        class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xl p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none"
+                                    >
+                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 font-semibold text-sm">IN</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="input-gutter-width" class="block text-xs font-bold uppercase mb-2 text-slate-500 dark:text-slate-400 tracking-wider">Flag/Gutter Width (Inches)</label>
+                                <div class="relative">
+                                    <input 
+                                        id="input-gutter-width" 
+                                        type="number" 
+                                        x-model.number="gutterWidth" 
+                                        min="0.1" 
+                                        step="any"
+                                        class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xl p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none"
+                                    >
+                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 font-semibold text-sm">IN</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="input-gutter-thickness" class="block text-xs font-bold uppercase mb-2 text-slate-500 dark:text-slate-400 tracking-wider">Flag/Gutter Thickness (Inches)</label>
+                                <div class="relative">
+                                    <input 
+                                        id="input-gutter-thickness" 
+                                        type="number" 
+                                        x-model.number="gutterThickness" 
+                                        min="0.1" 
+                                        step="any"
+                                        class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xl p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none"
+                                    >
+                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 font-semibold text-sm">IN</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Circular Slab Inputs -->
+                    <div x-show="mode === 'circular'" class="space-y-6" x-cloak>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="input-diameter" class="block text-xs font-bold uppercase mb-2 text-slate-500 dark:text-slate-400 tracking-wider">Diameter (Feet)</label>
+                                <div class="relative">
+                                    <input 
+                                        id="input-diameter" 
+                                        type="number" 
+                                        x-model.number="diameter" 
+                                        min="0.1" 
+                                        step="any"
+                                        class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xl p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none"
+                                    >
+                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 font-semibold text-sm">FT</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="input-circular-depth" class="block text-xs font-bold uppercase mb-2 text-slate-500 dark:text-slate-400 tracking-wider">Depth (Inches)</label>
+                                <div class="relative">
+                                    <input 
+                                        id="input-circular-depth" 
+                                        type="number" 
+                                        x-model.number="circularDepth" 
+                                        min="0.5" 
+                                        step="0.5"
+                                        class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xl p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none"
+                                    >
+                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 font-semibold text-sm">IN</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="input-quantity" class="block text-xs font-bold uppercase mb-2 text-slate-500 dark:text-slate-400 tracking-wider">Quantity</label>
+                            <input 
+                                id="input-quantity" 
+                                type="number" 
+                                x-model.number="quantity" 
+                                min="1" 
+                                step="1"
+                                class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xl p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Waste Buffer Toggle -->
+                    <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 flex items-center justify-between border border-slate-100 dark:border-slate-700">
+                        <div>
+                            <span class="block font-bold text-base text-slate-900 dark:text-white">Add 10% Waste Buffer</span>
+                            <span class="block text-xs text-slate-500 dark:text-slate-400">Highly recommended to cover spills, uneven subgrade, & cuts.</span>
+                        </div>
+                        <label for="toggle-waste" class="relative inline-flex items-center cursor-pointer">
+                            <input id="toggle-waste" type="checkbox" x-model="wasteBuffer" class="sr-only peer">
+                            <div class="w-12 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-none after:h-4 after:w-4 after:rounded-full after:transition-all peer-checked:bg-orange-500"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unit Costs Estimator Settings -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 transition-colors duration-200">
+                <h3 class="text-sm font-bold tracking-wide uppercase text-slate-500 dark:text-slate-400 pb-2 mb-4 flex items-center gap-2 border-b border-slate-100 dark:border-slate-700">
+                    💲 Material Cost Settings (Optional)
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label for="input-cost80" class="block text-xs font-bold uppercase mb-1 text-slate-500 dark:text-slate-400 tracking-wider">80lb Bag Cost ($)</label>
+                        <input id="input-cost80" type="number" x-model.number="bagCost80" step="0.05" class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-semibold p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none">
+                    </div>
+                    <div>
+                        <label for="input-cost60" class="block text-xs font-bold uppercase mb-1 text-slate-500 dark:text-slate-400 tracking-wider">60lb Bag Cost ($)</label>
+                        <input id="input-cost60" type="number" x-model.number="bagCost60" step="0.05" class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-semibold p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none">
+                    </div>
+                    <div>
+                        <label for="input-costyard" class="block text-xs font-bold uppercase mb-1 text-slate-500 dark:text-slate-400 tracking-wider">Delivered / Yard ($)</label>
+                        <input id="input-costyard" type="number" x-model.number="costPerYard" step="1" class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-semibold p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RIGHT COLUMN: Live Calculation Results & Output (5 cols) -->
+        <section class="lg:col-span-5 space-y-6">
+
+            <!-- Volume Summary Card -->
+            <div class="bg-gradient-to-br from-orange-500 to-amber-500 text-white p-6 rounded-2xl shadow-md border-none">
+                <span class="block text-xs font-semibold uppercase tracking-wider text-white/80">Total Required Volume</span>
+                <div class="flex items-baseline justify-between mt-2">
+                    <span class="text-5xl font-black tracking-tight" x-text="volumeCubicYards.toFixed(2)">0.00</span>
+                    <span class="text-xl font-bold uppercase opacity-95">Cubic Yards</span>
+                </div>
+                
+                <div class="border-t border-white/20 my-4 pt-4 flex justify-between font-medium text-sm">
+                    <span class="text-white/80">Base Volume:</span>
+                    <span x-text="volumeCubicFeet.toFixed(1) + ' cu. ft.'"></span>
+                </div>
+                <div class="flex justify-between font-medium text-sm">
+                    <span class="text-white/80">Total (inc. buffer):</span>
+                    <span x-text="totalCubicFeet.toFixed(1) + ' cu. ft.'"></span>
+                </div>
+            </div>
+
+            <!-- Bag count & Cost Options -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 transition-colors duration-200 space-y-6">
+                <h3 class="text-sm font-bold tracking-wide uppercase text-slate-800 dark:text-slate-200 pb-2 mb-4 border-b border-slate-100 dark:border-slate-700">
+                    🛒 Dry Mix Bag Options
+                </h3>
+                
+                <!-- 80lb Bags -->
+                <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 flex items-center justify-between border border-slate-100 dark:border-slate-700 hover:border-slate-200 dark:hover:border-slate-600 transition-all">
+                    <div>
+                        <span class="block font-bold text-2xl text-slate-900 dark:text-white">
+                            <span x-text="bags80lb">0</span> Bags
+                        </span>
+                        <span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">80 lb bags needed (0.60 cu. ft. yield)</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="block text-xs text-slate-400 dark:text-slate-500 uppercase font-semibold">Est. Cost</span>
+                        <span class="block text-xl font-extrabold text-orange-600 dark:text-orange-400" x-text="'$' + totalCost80lb.toFixed(2)">$0.00</span>
+                    </div>
+                </div>
+
+                <!-- 60lb Bags -->
+                <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 flex items-center justify-between border border-slate-100 dark:border-slate-700 hover:border-slate-200 dark:hover:border-slate-600 transition-all">
+                    <div>
+                        <span class="block font-bold text-2xl text-slate-900 dark:text-white">
+                            <span x-text="bags60lb">0</span> Bags
+                        </span>
+                        <span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">60 lb bags needed (0.45 cu. ft. yield)</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="block text-xs text-slate-400 dark:text-slate-500 uppercase font-semibold">Est. Cost</span>
+                        <span class="block text-xl font-extrabold text-orange-600 dark:text-orange-400" x-text="'$' + totalCost60lb.toFixed(2)">$0.00</span>
+                    </div>
+                </div>
+
+                <!-- Average Delivered Cost Range helper -->
+                <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Est. Material Cost Range</span>
+                        <span class="bg-orange-100 dark:bg-orange-950/50 text-orange-700 dark:text-orange-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full">$125 - $150 / yd³</span>
+                    </div>
+                    <div class="flex items-baseline justify-between mt-2">
+                        <span class="text-slate-600 dark:text-slate-400 text-sm font-semibold">Bulk Concrete Cost</span>
+                        <span class="text-lg font-bold text-slate-900 dark:text-white" x-text="'$' + avgCostMin.toFixed(2) + ' - $' + avgCostMax.toFixed(2)"></span>
+                    </div>
+                </div>
+
+                <!-- Premix Yard delivery estimation helper -->
+                <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Truck Delivery Estimate</span>
+                        <span class="bg-red-50 dark:bg-red-950/50 text-red-700 dark:text-red-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full">1-3 yd minimums</span>
+                    </div>
+                    <div class="flex items-baseline justify-between mt-2">
+                        <span class="text-slate-600 dark:text-slate-400 text-sm font-semibold">Delivered Wet Concrete</span>
+                        <span class="text-lg font-bold text-slate-900 dark:text-white" x-text="'~$' + totalCostYard.toFixed(2)"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Print & Action Button -->
+            <div class="no-print pt-2">
+                <button 
+                    id="btn-print"
+                    @click="printList()"
+                    class="w-full bg-orange-500 hover:bg-orange-600 active:scale-[0.98] text-white font-bold text-lg py-4 px-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-3"
+                >
+                    🖨️ Print Shopping List
+                </button>
+                <p class="text-center text-xs text-slate-400 dark:text-slate-500 mt-3">Calculations automatically include the 10% safety buffer if enabled.</p>
+            </div>
+            <!-- [FUTURE AD: SIDEBAR BOX GOES HERE] -->
+        </section>
+    </div>
+
+    <!-- [FUTURE AD: IN-CONTENT BANNER GOES HERE] -->
+    <!-- SEO Article & FAQ Section -->
+    <section class="no-print mt-12 space-y-8">
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 text-slate-800 dark:text-slate-200 transition-colors duration-200">
+            <h2 class="text-2xl font-bold tracking-tight mb-4 text-slate-900 dark:text-white uppercase border-b border-slate-100 dark:border-slate-700 pb-2">
+                How to Calculate Concrete Slab Yardage
+            </h2>
+            <div class="prose max-w-none space-y-4 text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
+                <p>
+                    Calculating the volume of concrete needed for a construction slab is a critical step in project budgeting and scheduling. In the United States, concrete is measured and purchased in <span class="text-slate-900 dark:text-white font-bold">Cubic Yards</span> (often abbreviated as "yards" or "yd³"). 
+                </p>
+                <div class="bg-slate-50 dark:bg-slate-900 p-5 rounded-xl border border-slate-100 dark:border-slate-700 space-y-2 text-slate-700 dark:text-slate-300">
+                    <span class="block font-bold text-slate-900 dark:text-white uppercase text-xs tracking-wider">Standard Estimation Formula:</span>
+                    <div class="font-mono font-bold text-center py-2.5 text-base md:text-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-orange-600 dark:text-orange-400 rounded-lg select-all shadow-sm">
+                        Volume (yd³) = [ Length (ft) × Width (ft) × (Depth (in) ÷ 12) ] ÷ 27
+                    </div>
+                </div>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white uppercase mt-6 mb-2">Step-by-Step Calculation Guide</h3>
+                <ol class="list-decimal pl-5 space-y-2 text-slate-600 dark:text-slate-300">
+                    <li><strong class="text-slate-900 dark:text-white">Calculate Square Footage:</strong> Multiply the length by the width of the slab area in feet to determine the horizontal surface area.</li>
+                    <li><strong class="text-slate-900 dark:text-white">Convert Depth to Feet:</strong> Concrete depth is usually specified in inches. Divide this number by 12 to convert it to feet (e.g., 4" depth becomes 0.33 feet).</li>
+                    <li><strong class="text-slate-900 dark:text-white">Multiply Area by Depth:</strong> Multiply your square footage by the decimal depth in feet to get the total volume in <strong class="text-slate-900 dark:text-white">Cubic Feet</strong>.</li>
+                    <li><strong class="text-slate-900 dark:text-white">Convert to Cubic Yards:</strong> Divide the total cubic feet by 27 (since there are 27 cubic feet in one cubic yard).</li>
+                    <li><strong class="text-slate-900 dark:text-white">Apply Waste Buffer:</strong> Standard building practice recommends adding a 10% buffer to account for grade variations, minor spills, and subgrade compaction.</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 text-slate-800 dark:text-slate-200 transition-colors duration-200">
+            <h2 class="text-2xl font-bold tracking-tight mb-6 text-slate-900 dark:text-white uppercase border-b border-slate-100 dark:border-slate-700 pb-2">
+                Frequently Asked Questions (FAQs)
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 rounded-xl p-5 hover:border-slate-200 dark:hover:border-slate-600 transition-all shadow-sm">
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-2">❓ How many 80lb bags of concrete are in a cubic yard?</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300">
+                        There are exactly <strong class="text-orange-600 dark:text-orange-400">45 bags of 80lb dry mix concrete</strong> in one cubic yard. An 80lb bag yields approximately 0.60 cubic feet of wet concrete when mixed.
+                    </p>
+                </div>
+                <div class="border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 rounded-xl p-5 hover:border-slate-200 dark:hover:border-slate-600 transition-all shadow-sm">
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-2">❓ What is the standard depth for a concrete patio or driveway?</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300">
+                        Patios, sidewalks, and shed pads typically require a <strong class="text-orange-600 dark:text-orange-400">4-inch depth</strong>. Driveways, parking pads, and heavy machinery support require a minimum of <strong class="text-orange-600 dark:text-orange-400">6 inches</strong> to support vehicle weight and meet local building codes.
+                    </p>
+                </div>
+                <div class="border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 rounded-xl p-5 hover:border-slate-200 dark:hover:border-slate-600 transition-all shadow-sm">
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-2">❓ Why should I add a 10% waste buffer to my concrete calculations?</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300">
+                        Adding a <strong class="text-orange-600 dark:text-orange-400">10% waste buffer</strong> is a standard contracting standard to account for subgrade variations, spills, uneven surfaces, and cuts. It ensures you do not run out of material mid-pour, which can ruin the finish.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Print-only detailed breakdown list -->
+    <div class="hidden print-only mt-8 text-black print-card rounded-xl">
+        <h3 class="text-lg font-bold border-b-2 border-slate-300 mb-4">SPECIFICATIONS & ESTIMATES</h3>
+        <table class="w-full text-left text-sm border-collapse">
+            <tbody>
+                <tr class="border-b border-slate-200">
+                    <th class="py-2">Calculation Mode</th>
+                    <td class="py-2 text-right font-bold uppercase text-orange-600 dark:text-orange-400" x-text="mode === 'slab' ? 'Slab' : (mode === 'curb' ? 'Curb & Gutter' : 'Circular Slab')"></td>
+                </tr>
+                <tr class="border-b border-slate-200" x-show="mode === 'slab'">
+                    <th class="py-2">Dimensions</th>
+                    <td class="py-2 text-right"><span x-text="length"></span> ft x <span x-text="width"></span> ft @ <span x-text="depth"></span> in</td>
+                </tr>
+                <tr class="border-b border-slate-200" x-show="mode === 'curb'">
+                    <th class="py-2">Dimensions</th>
+                    <td class="py-2 text-right">Length: <span x-text="curbLength"></span> ft | Curb: <span x-text="curbHeight"></span>" x <span x-text="curbThickness"></span>" | Gutter: <span x-text="gutterWidth"></span>" x <span x-text="gutterThickness"></span>"</td>
+                </tr>
+                <tr class="border-b border-slate-200" x-show="mode === 'circular'">
+                    <th class="py-2">Dimensions</th>
+                    <td class="py-2 text-right">Diameter: <span x-text="diameter"></span> ft @ <span x-text="circularDepth"></span> in (Qty: <span x-text="quantity"></span>)</td>
+                </tr>
+                <tr class="border-b border-slate-200">
+                    <th class="py-2">10% Waste Buffer Added</th>
+                    <td class="py-2 text-right" x-text="wasteBuffer ? 'Yes' : 'No'"></td>
+                </tr>
+                <tr class="border-b border-slate-200">
+                    <th class="py-2">Total Volume Required</th>
+                    <td class="py-2 text-right font-bold"><span x-text="volumeCubicYards.toFixed(2)"></span> Cubic Yards (<span x-text="totalCubicFeet.toFixed(1)"></span> cu. ft.)</td>
+                </tr>
+                <tr class="border-b border-slate-200">
+                    <th class="py-2">80lb Dry Mix Bags Required</th>
+                    <td class="py-2 text-right font-bold"><span x-text="bags80lb"></span> Bags (Est: $<span x-text="totalCost80lb.toFixed(2)"></span>)</td>
+                </tr>
+                <tr class="border-b border-slate-200">
+                    <th class="py-2">60lb Dry Mix Bags Required</th>
+                    <td class="py-2 text-right font-bold"><span x-text="bags60lb"></span> Bags (Est: $<span x-text="totalCost60lb.toFixed(2)"></span>)</td>
+                </tr>
+                <tr class="border-b border-slate-200">
+                    <th class="py-2">Est. Bulk Cost ($125-$150/yd³)</th>
+                    <td class="py-2 text-right font-bold">$<span x-text="avgCostMin.toFixed(2)"></span> - $<span x-text="avgCostMax.toFixed(2)"></span></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="mt-8 text-center text-xs text-slate-500">
+            Thank you for using the Pro Slab Concrete & Material Estimator. Check local hardware store pricing prior to purchase.
+        </div>
+    </div>
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="no-print border-t mt-10 transition-colors duration-200"
+        :class="darkMode ? 'border-slate-700 bg-slate-900 text-slate-400' : 'border-slate-200 bg-slate-50 text-slate-500'"
+    >
+        <!-- Top footer bar -->
+        <div class="max-w-4xl mx-auto px-6 py-8 flex flex-col items-center gap-5">
+
+            <!-- Brand & Copyright -->
+            <div class="flex flex-col items-center gap-1">
+                <span class="text-sm font-bold tracking-wide" :class="darkMode ? 'text-slate-200' : 'text-slate-700'">
+                    🏗️ Pro Concrete &amp; Material Estimator
+                </span>
+                <span class="text-xs" :class="darkMode ? 'text-slate-500' : 'text-slate-400'">
+                    © 2026 All Rights Reserved.
+                </span>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-xs font-medium">
+                <a href="#" id="footer-privacy"
+                   class="transition-colors duration-150 hover:text-orange-500"
+                   :class="darkMode ? 'text-slate-400' : 'text-slate-500'">
+                    Privacy Policy
+                </a>
+                <span :class="darkMode ? 'text-slate-700' : 'text-slate-300'">|</span>
+                <a href="#" id="footer-terms"
+                   class="transition-colors duration-150 hover:text-orange-500"
+                   :class="darkMode ? 'text-slate-400' : 'text-slate-500'">
+                    Terms of Service
+                </a>
+                <span :class="darkMode ? 'text-slate-700' : 'text-slate-300'">|</span>
+                <a href="mailto:contact@proslabcalc.com" id="footer-contact"
+                   class="transition-colors duration-150 hover:text-orange-500"
+                   :class="darkMode ? 'text-slate-400' : 'text-slate-500'">
+                    Contact Us
+                </a>
+            </nav>
+
+            <!-- Disclaimer -->
+            <p class="text-center text-xs leading-relaxed max-w-xl"
+               :class="darkMode ? 'text-slate-600' : 'text-slate-400'">
+                <strong :class="darkMode ? 'text-slate-500' : 'text-slate-500'">Disclaimer:</strong>
+                All calculations are estimates only. Consult a licensed contractor before purchasing materials or beginning construction.
+            </p>
+        </div>
+
+        <!-- Bottom accent line -->
+        <div class="h-1 w-full bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500 opacity-70"></div>
+    </footer>
+
+</body>
+</html>
