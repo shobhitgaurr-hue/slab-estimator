@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20x20 Concrete Slab Calculator - Estimate Yards, Bags & Cost</title>
+    <meta name="description" content="Calculate concrete volume in cubic yards, bag counts, and material cost for a 20x20 slab. Custom specs for double driveways and garage floors.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.slabestimator.org/20x20-concrete-slab-calculator/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.slabestimator.org/20x20-concrete-slab-calculator/">
+    <meta property="og:title" content="20x20 Concrete Slab Calculator - Estimate Yards, Bags & Cost">
+    <meta property="og:description" content="Calculate concrete volume in cubic yards, bag counts, and material cost for a 20x20 slab. Custom specs for double driveways and garage floors.">
+    <meta property="og:image" content="https://www.slabestimator.org/images/og-preview.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.slabestimator.org/20x20-concrete-slab-calculator/">
+    <meta name="twitter:title" content="20x20 Concrete Slab Calculator - Estimate Yards, Bags & Cost">
+    <meta name="twitter:description" content="Calculate concrete volume in cubic yards, bag counts, and material cost for a 20x20 slab. Custom specs for double driveways and garage floors.">
+    <meta name="twitter:image" content="https://www.slabestimator.org/images/og-preview.png">
+
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'Inter', 'sans-serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            .print-card {
+                box-shadow: none !important;
+                border: 1px solid #e2e8f0 !important;
+                margin: 0 !important;
+                padding: 15px !important;
+            }
+        }
+        [x-cloak] { display: none !important; }
+    </style>
+    <!-- JSON-LD Structured Data Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "20x20 Concrete Slab Calculator",
+      "url": "https://www.slabestimator.org/20x20-concrete-slab-calculator/",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Calculate concrete volume in cubic yards, bag counts, and material cost for a 20x20 slab. Custom specs for double driveways and garage floors."
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How many yards of concrete do I need for a 20x20 slab at 6 inches?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For a 20x20 slab poured at a recommended 6-inch thickness, you will need approximately 7.41 cubic yards of concrete. When accounting for a recommended 10% waste buffer, you should order or mix 8.15 cubic yards."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many bags of concrete do I need for a 20x20 slab?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "To pour a 20x20 slab at a 6-inch depth with a 10% buffer, you will need 367 bags of 80lb concrete mix, or 489 bags of 60lb concrete mix."
+          }
+        }
+      ]
+    }
+    </script>
+</head>
+<body 
+    x-data="{
+        darkMode: localStorage.getItem('darkMode') === 'true',
+        mode: 'slab',
+        length: 20,
+        width: 20,
+        depth: 6,
+        curbLength: 10,
+        curbHeight: 6,
+        curbThickness: 6,
+        gutterWidth: 12,
+        gutterThickness: 6,
+        diameter: 10,
+        circularDepth: 4,
+        quantity: 1,
+        wasteBuffer: true,
+        bagCost80: 6.50,
+        bagCost60: 5.20,
+        costPerYard: 145.00,
+        
+        toggleDarkMode() {
+            this.darkMode = !this.darkMode;
+            localStorage.setItem('darkMode', this.darkMode);
+        },
+        
+        applyPreset(l, w, d) {
+            this.length = l;
+            this.width = w;
+            this.depth = d;
+        },
+        
+        get volumeCubicFeet() {
+            if (this.mode === 'slab') {
+                let base = this.length * this.width * (this.depth / 12);
+                return isNaN(base) ? 0 : base;
+            } else if (this.mode === 'curb') {
+                let area = ((this.curbHeight * this.curbThickness) + (this.gutterWidth * this.gutterThickness)) / 144;
+                let base = area * this.curbLength;
+                return isNaN(base) ? 0 : base;
+            } else if (this.mode === 'circular') {
+                let radius = this.diameter / 2;
+                let base = Math.PI * Math.pow(radius, 2) * (this.circularDepth / 12) * this.quantity;
+                return isNaN(base) ? 0 : base;
+            }
+            return 0;
+        },
+        
+        get volumeCubicYards() {
+            let base = this.volumeCubicFeet / 27;
+            if (isNaN(base)) return 0;
+            return this.wasteBuffer ? base * 1.10 : base;
+        },
+        
+        get totalCubicFeet() {
+            return this.volumeCubicYards * 27;
+        },
+        
+        get bags80lb() {
+            return Math.ceil(this.volumeCubicYards * 45);
+        },
+        
+        get bags60lb() {
+            return Math.ceil(this.volumeCubicYards * 60);
+        },
+        
+        get totalCost80lb() {
+            return this.bags80lb * this.bagCost80;
+        },
+        
+        get totalCost60lb() {
+            return this.bags60lb * this.bagCost60;
+        },
+        
+        get totalCostYard() {
+            return this.volumeCubicYards * this.costPerYard;
+        },
+
+        get avgCostMin() {
+            return this.volumeCubicYards * 125;
+        },
+
+        get avgCostMax() {
+            return this.volumeCubicYards * 150;
+        },
+        
+        printList() {
+            window.print();
+        }
+    }"
+    :class="darkMode ? 'dark bg-slate-900 text-white' : 'bg-slate-50 text-slate-900'"
+    class="font-sans min-h-screen flex flex-col selection:bg-orange-500 selection:text-white transition-colors duration-200"
+>
+
+    <!-- Top Navigation Bar -->
+    <header 
+        class="no-print border-b py-4 px-6 sticky top-0 z-50 shadow-sm transition-colors duration-200"
+        :class="darkMode ? 'border-slate-700 bg-slate-800/90 text-white' : 'border-slate-200 bg-white/80 text-slate-900'"
+        style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);"
+    >
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <a href="../index.html" class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center font-black text-white text-xl shadow-sm hover:bg-orange-600 transition-colors">
+                    C
+                </a>
+                <div>
+                    <a href="../index.html" class="text-xl font-bold tracking-tight hover:text-orange-500 transition-colors flex items-center gap-2" :class="darkMode ? 'text-white' : 'text-slate-900'">
+                        CONCRETE ESTIMATOR <span class="bg-orange-100 dark:bg-orange-950/50 text-orange-700 dark:text-orange-400 text-xs font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">US Standard</span>
+                    </a>
+                    <p class="text-xs" :class="darkMode ? 'text-slate-400' : 'text-slate-500'">Precision slab & material calculator</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <button 
+                    @click="toggleDarkMode()" 
+                    class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all border border-slate-200 dark:border-slate-600 flex items-center justify-center shadow-sm"
+                    aria-label="Toggle dark mode"
+                >
+                    <span x-show="darkMode" x-cloak>☀️</span>
+                    <span x-show="!darkMode" x-cloak>🌙</span>
+                </button>
+                <span class="text-xs font-medium" :class="darkMode ? 'text-slate-400' : 'text-slate-500'">System Live Status</span>
+                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <!-- Breadcrumb Navigation -->
+        <nav aria-label="Breadcrumb" class="no-print mb-6 text-sm text-slate-500 dark:text-slate-400">
+            <ol itemscope itemtype="https://schema.org/BreadcrumbList" class="flex flex-wrap items-center gap-2">
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="flex items-center">
+                    <a itemprop="item" href="../index.html" class="hover:text-orange-500 transition-colors">
+                        <span itemprop="name">Home</span>
+                    </a>
+                    <meta itemprop="position" content="1" />
+                    <span class="mx-2 text-slate-300 dark:text-slate-700">&gt;</span>
+                </li>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="flex items-center">
+                    <a itemprop="item" href="../calculator/index.html" class="hover:text-orange-500 transition-colors">
+                        <span itemprop="name">Calculators</span>
+                    </a>
+                    <meta itemprop="position" content="2" />
+                    <span class="mx-2 text-slate-300 dark:text-slate-700">&gt;</span>
+                </li>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="flex items-center text-slate-800 dark:text-slate-200 font-medium">
+                    <span itemprop="name">20x20 Concrete Slab Calculator</span>
+                    <meta itemprop="position" content="3" />
+                </li>
+            </ol>
+        </nav>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <!-- LEFT COLUMN: Inputs (7 cols) -->
+            <section class="lg:col-span-7 space-y-6">
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 transition-colors duration-200">
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100 dark:border-slate-700">
+                        <div>
+                            <span class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">Preset Calculator</span>
+                            <h2 class="text-xl font-bold tracking-tight text-slate-800 dark:text-white uppercase">20' x 20' Slab Estimator</h2>
+                        </div>
+                    </div>
+
+                    <!-- Calculator Inputs -->
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="input-length" class="block text-xs font-bold uppercase mb-2 text-slate-500 dark:text-slate-400 tracking-wider">Length (Feet)</label>
+                                <div class="relative">
+                                    <input id="input-length" type="number" x-model.number="length" class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xl p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none">
+                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 font-semibold text-sm">FT</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="input-width" class="block text-xs font-bold uppercase mb-2 text-slate-500 dark:text-slate-400 tracking-wider">Width (Feet)</label>
+                                <div class="relative">
+                                    <input id="input-width" type="number" x-model.number="width" class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xl p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none">
+                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 font-semibold text-sm">FT</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="input-depth" class="block text-xs font-bold uppercase mb-2 text-slate-500 dark:text-slate-400 tracking-wider">Thickness (Inches)</label>
+                            <div class="relative">
+                                <input id="input-depth" type="number" x-model.number="depth" class="w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xl p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 dark:focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all outline-none">
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 font-semibold text-sm">IN</span>
+                            </div>
+                        </div>
+
+                        <!-- Waste Buffer Toggle -->
+                        <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 flex items-center justify-between border border-slate-100 dark:border-slate-700">
+                            <div>
+                                <span class="block font-bold text-base text-slate-900 dark:text-white">Add 10% Waste Buffer</span>
+                                <span class="block text-xs text-slate-500 dark:text-slate-400">Highly recommended to cover spills, uneven subgrade, & cuts.</span>
+                            </div>
+                            <label for="toggle-waste" class="relative inline-flex items-center cursor-pointer">
+                                <input id="toggle-waste" type="checkbox" x-model="wasteBuffer" class="sr-only peer">
+                                <div class="w-12 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-none after:h-4 after:w-4 after:rounded-full after:transition-all peer-checked:bg-orange-500"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT COLUMN: Results (5 cols) -->
+            <section class="lg:col-span-5 space-y-6">
+                <div class="bg-gradient-to-br from-orange-500 to-amber-500 text-white p-6 rounded-2xl shadow-md border-none">
+                    <span class="block text-xs font-semibold uppercase tracking-wider text-white/80">Total Required Volume</span>
+                    <div class="flex items-baseline justify-between mt-2">
+                        <span class="text-5xl font-black tracking-tight" x-text="volumeCubicYards.toFixed(2)">0.00</span>
+                        <span class="text-xl font-bold uppercase opacity-95">Cubic Yards</span>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 transition-colors duration-200 space-y-6">
+                    <h3 class="text-sm font-bold tracking-wide uppercase text-slate-800 dark:text-slate-200 pb-2 mb-4 border-b border-slate-100 dark:border-slate-700">
+                        🛒 Dry Mix Bag Options
+                    </h3>
+                    
+                    <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 flex items-center justify-between border border-slate-100 dark:border-slate-700">
+                        <div>
+                            <span class="block font-bold text-2xl text-slate-900 dark:text-white">
+                                <span x-text="bags80lb">0</span> Bags
+                            </span>
+                            <span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">80 lb bags needed (0.60 cu. ft. yield)</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 flex items-center justify-between border border-slate-100 dark:border-slate-700">
+                        <div>
+                            <span class="block font-bold text-2xl text-slate-900 dark:text-white">
+                                <span x-text="bags60lb">0</span> Bags
+                            </span>
+                            <span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">60 lb bags needed (0.45 cu. ft. yield)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- SEO Content Section -->
+        <section class="no-print mt-12 space-y-8">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 text-slate-800 dark:text-slate-200 transition-colors duration-200">
+                <h1 class="text-2xl font-bold tracking-tight mb-4 text-slate-900 dark:text-white uppercase border-b border-slate-100 dark:border-slate-700 pb-2">
+                    How to Calculate and Pour a 20x20 Concrete Slab
+                </h1>
+                
+                <div class="prose max-w-none space-y-4 text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
+                    <p>
+                        A 20x20 concrete slab is the absolute standard footprint choice for residential detached garages, double-car parking driveways, and large backyard entertainment patios. Spanning exactly 400 square feet, this size of slab supports significant load distribution, which makes correct thickness and steel reinforcement preparation absolutely vital.
+                    </p>
+                    <p>
+                        Need helper estimates for alternative sizes? Try our dynamic <a href="../calculator/index.html" class="text-orange-500 hover:underline font-bold">Concrete Slab Calculator</a>. For backyard patios, check our specialized <a href="../concrete-patio-calculator/index.html" class="text-orange-500 hover:underline font-bold">Concrete Patio Calculator</a>.
+                    </p>
+
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white uppercase mt-6 mb-2">Concrete Yards & Bag Estimates for 20x20 Slabs</h3>
+                    <p>
+                        Because 20x20 slabs are typically used for vehicle parking or heavy structures, a **6-inch depth** is highly recommended over the standard 4 inches. At 6 inches of thickness, a 20x20 slab requires **7.41 cubic yards** of wet concrete. Applying the standard 10% safety buffer increases the needed purchase volume to **8.15 cubic yards**.
+                    </p>
+                    <p>
+                        If you are mixing concrete using dry pre-packaged bags by hand (not recommended for this volume unless completed in stages), you will require:
+                    </p>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>80 lb Bags:</strong> You will need <strong>367 bags</strong> (each yielding 0.60 cu. ft.).</li>
+                        <li><strong>60 lb Bags:</strong> You will need <strong>489 bags</strong> (each yielding 0.45 cu. ft.).</li>
+                    </ul>
+
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white uppercase mt-6 mb-2">Important Tips for Pouring a 20x20 Slab</h3>
+                    <ol class="list-decimal pl-5 space-y-2">
+                        <li><strong>Incorporate Steel Rebar Grid:</strong> Do not rely on light wire mesh. Lay a structural grid of #3 (3/8-inch) or #4 (1/2-inch) steel rebar spaced 12 to 16 inches apart. Elevate the rebar on concrete "chairs" to ensure it sits in the middle of the slab's depth during the pour.</li>
+                        <li><strong>Focus on Subbase Compaction:</strong> Vehicles put heavy stress on the slab edges and joints. Remove all organic topsoil and lay 4 inches of crushed gravel. Use a mechanical plate vibrator to compact it until fully solid.</li>
+                        <li><strong>Create Control Joints:</strong> Concrete shrinks as it cures. Install joints at least every 10 feet. For a 20x20 slab, divide it into four equal 10x10 squares by cutting control joints down both center lines.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 text-slate-800 dark:text-slate-200 transition-colors duration-200">
+                <h2 class="text-2xl font-bold tracking-tight mb-6 text-slate-900 dark:text-white uppercase border-b border-slate-100 dark:border-slate-700 pb-2">
+                    20x20 Slab FAQs
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 rounded-xl p-5 shadow-sm">
+                        <h3 class="font-bold text-base text-slate-900 dark:text-white mb-2">❓ How many yards of concrete do I need for a 20x20 slab at 6 inches?</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">
+                            For a 20x20 slab poured at a recommended 6-inch thickness, you will need approximately 7.41 cubic yards of concrete. When accounting for a recommended 10% waste buffer, you should order or mix 8.15 cubic yards.
+                        </p>
+                    </div>
+                    <div class="border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 rounded-xl p-5 shadow-sm">
+                        <h3 class="font-bold text-base text-slate-900 dark:text-white mb-2">❓ How many bags of concrete do I need for a 20x20 slab?</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">
+                            To pour a 20x20 slab at a 6-inch depth with a 10% buffer, you will need 367 bags of 80lb concrete mix, or 489 bags of 60lb concrete mix.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Related Concrete Calculators Section -->
+        <section class="no-print mt-12">
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 text-slate-800 dark:text-slate-200 transition-colors duration-200">
+                <h2 class="text-2xl font-bold tracking-tight mb-6 text-slate-900 dark:text-white uppercase border-b border-slate-100 dark:border-slate-700 pb-2">
+                    Related Concrete Calculators
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <a href="../index.html" class="p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-orange-500 dark:hover:border-orange-500 bg-slate-50 dark:bg-slate-900 transition-all group flex flex-col justify-between">
+                        <div>
+                            <span class="block font-bold text-slate-900 dark:text-white group-hover:text-orange-500 transition-colors">Slab Calculator</span>
+                            <span class="block text-xs text-slate-500 dark:text-slate-400 mt-1">Estimate general slab dimensions, concrete bags, and cost.</span>
+                        </div>
+                        <span class="text-orange-500 text-xs font-semibold mt-3 inline-flex items-center gap-1">Open Tool &rarr;</span>
+                    </a>
+                    <a href="../concrete-patio-calculator/index.html" class="p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-orange-500 dark:hover:border-orange-500 bg-slate-50 dark:bg-slate-900 transition-all group flex flex-col justify-between">
+                        <div>
+                            <span class="block font-bold text-slate-900 dark:text-white group-hover:text-orange-500 transition-colors">Patio Calculator</span>
+                            <span class="block text-xs text-slate-500 dark:text-slate-400 mt-1">Estimate material needs for residential patios at 4" depth.</span>
+                        </div>
+                        <span class="text-orange-500 text-xs font-semibold mt-3 inline-flex items-center gap-1">Open Tool &rarr;</span>
+                    </a>
+                    <a href="../concrete-driveway-calculator/index.html" class="p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-orange-500 dark:hover:border-orange-500 bg-slate-50 dark:bg-slate-900 transition-all group flex flex-col justify-between">
+                        <div>
+                            <span class="block font-bold text-slate-900 dark:text-white group-hover:text-orange-500 transition-colors">Driveway Calculator</span>
+                            <span class="block text-xs text-slate-500 dark:text-slate-400 mt-1">Calculate volume and bags for heavy vehicle driveway load specs.</span>
+                        </div>
+                        <span class="text-orange-500 text-xs font-semibold mt-3 inline-flex items-center gap-1">Open Tool &rarr;</span>
+                    </a>
+                    <a href="../concrete-footing-calculator/index.html" class="p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-orange-500 dark:hover:border-orange-500 bg-slate-50 dark:bg-slate-900 transition-all group flex flex-col justify-between">
+                        <div>
+                            <span class="block font-bold text-slate-900 dark:text-white group-hover:text-orange-500 transition-colors">Footing Calculator</span>
+                            <span class="block text-xs text-slate-500 dark:text-slate-400 mt-1">Calculate deck, wall, and structural footing pour yards.</span>
+                        </div>
+                        <span class="text-orange-500 text-xs font-semibold mt-3 inline-flex items-center gap-1">Open Tool &rarr;</span>
+                    </a>
+                    <a href="../calculator/index.html" class="p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-orange-500 dark:hover:border-orange-500 bg-slate-50 dark:bg-slate-900 transition-all group flex flex-col justify-between">
+                        <div>
+                            <span class="block font-bold text-slate-900 dark:text-white group-hover:text-orange-500 transition-colors">Dynamic Calculator</span>
+                            <span class="block text-xs text-slate-500 dark:text-slate-400 mt-1">Open calculator with customizable dynamic dimensions.</span>
+                        </div>
+                        <span class="text-orange-500 text-xs font-semibold mt-3 inline-flex items-center gap-1">Open Tool &rarr;</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="no-print border-t mt-10 transition-colors duration-200" :class="darkMode ? 'border-slate-700 bg-slate-900 text-slate-400' : 'border-slate-200 bg-slate-50 text-slate-500'">
+        <div class="max-w-4xl mx-auto px-6 py-8 flex flex-col items-center gap-5">
+            <div class="flex flex-col items-center gap-1">
+                <span class="text-sm font-bold tracking-wide" :class="darkMode ? 'text-slate-200' : 'text-slate-700'">
+                    🏗️ Pro Concrete &amp; Material Estimator
+                </span>
+                <span class="text-xs" :class="darkMode ? 'text-slate-500' : 'text-slate-400'">
+                    © 2026 All Rights Reserved.
+                </span>
+            </div>
+
+            <nav class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-xs font-medium">
+                <a href="../privacy-policy/index.html" class="transition-colors duration-150 hover:text-orange-500">Privacy Policy</a>
+                <span :class="darkMode ? 'text-slate-700' : 'text-slate-300'">|</span>
+                <a href="../terms-of-service/index.html" class="transition-colors duration-150 hover:text-orange-500">Terms of Service</a>
+            </nav>
+            <p class="text-center text-xs leading-relaxed max-w-xl" :class="darkMode ? 'text-slate-600' : 'text-slate-400'">
+                <strong>Disclaimer:</strong> All calculations are estimates only. Consult a licensed contractor before purchasing materials or beginning construction.
+            </p>
+        </div>
+        <div class="h-1 w-full bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500 opacity-70"></div>
+    </footer>
+
+</body>
+</html>

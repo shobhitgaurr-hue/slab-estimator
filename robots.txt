@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://slabestimator.org/sitemap.xml
+Sitemap: https://www.slabestimator.org/sitemap.xml
