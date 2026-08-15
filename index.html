@@ -3,8 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Concrete & Material Estimator | Pro Slab Calculator</title>
-    <meta name="description" content="Calculate concrete slab volume in cubic yards, cubic feet, and bag counts (80lb/60lb). Fast, modern design optimized for high readability.">
+    <title>Concrete Slab Calculator – Estimate Cubic Yards, Bags & Cost | Free US Tool</title>
+    <meta name="description" content="Free concrete calculator for slabs, curbs & circular pours. Get cubic yards, 80lb/60lb bag counts, and cost estimates instantly.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.slabestimator.org/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.slabestimator.org/">
+    <meta property="og:title" content="Concrete Slab Calculator – Estimate Cubic Yards, Bags & Cost">
+    <meta property="og:description" content="Free concrete calculator for slabs, curbs & circular pours. Instant cubic yard, bag count, and cost estimates.">
+    <meta property="og:image" content="https://www.slabestimator.org/images/og-preview.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.slabestimator.org/">
+    <meta name="twitter:title" content="Concrete Slab Calculator – Estimate Cubic Yards, Bags & Cost">
+    <meta name="twitter:description" content="Free concrete calculator for slabs, curbs & circular pours. Instant cubic yard, bag count, and cost estimates.">
+    <meta name="twitter:image" content="https://www.slabestimator.org/images/og-preview.png">
+
     <!-- Google Fonts: Inter & Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,51 +70,88 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@graph": [
+      "@type": "WebApplication",
+      "name": "Pro Concrete Slab Estimator",
+      "url": "https://www.slabestimator.org/",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Free concrete calculator for slabs, curbs & circular pours. Get cubic yards, 80lb/60lb bag counts, and cost estimates instantly."
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
         {
-          "@type": "WebApplication",
-          "@id": "http://localhost:8000/#webapp",
-          "url": "http://localhost:8000/",
-          "name": "Concrete & Material Estimator | Pro Slab Calculator",
-          "applicationCategory": "BusinessApplication",
-          "operatingSystem": "All",
-          "browserRequirements": "Requires JavaScript. Requires HTML5.",
-          "description": "Calculate concrete slab volume in cubic yards, cubic feet, and dry bag counts (80lb/60lb). Fast, Neubrutalism design optimized for high-contrast outdoor readability.",
-          "offers": {
-            "@type": "Offer",
-            "price": "0.00",
-            "priceCurrency": "USD"
+          "@type": "Question",
+          "name": "How many 80lb bags of concrete are in a cubic yard?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "There are exactly 45 bags of 80lb dry mix concrete in one cubic yard. An 80lb bag yields approximately 0.60 cubic feet of wet concrete when mixed."
           }
         },
         {
-          "@type": "FAQPage",
-          "@id": "http://localhost:8000/#faq",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "How many 80lb bags of concrete are in a cubic yard?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "There are exactly 45 bags of 80lb dry mix concrete in one cubic yard."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What is the standard depth for a concrete patio or driveway?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Patios, sidewalks, and shed pads typically require a 4-inch depth. Driveways, parking pads, and heavy machinery support require a minimum of 6 inches."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Why should I add a 10% waste buffer to my concrete calculations?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Adding a 10% waste buffer is a building standard to account for subgrade variations, spills, uneven surfaces, and cuts."
-              }
-            }
-          ]
+          "@type": "Question",
+          "name": "What is the standard depth for a concrete patio or driveway?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Patios, sidewalks, and shed pads typically require a 4-inch depth. Driveways, parking pads, and heavy machinery support require a minimum of 6 inches to support vehicle weight and meet local building codes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why should I add a 10% waste buffer to my concrete calculations?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Adding a 10% waste buffer is a standard contracting standard to account for subgrade variations, spills, uneven surfaces, and cuts. It ensures you do not run out of material mid-pour, which can ruin the finish."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Calculate Concrete Slab Yardage",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Calculate Square Footage",
+          "text": "Multiply the length by the width of the slab area in feet to determine the horizontal surface area."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Convert Depth to Feet",
+          "text": "Concrete depth is usually specified in inches. Divide this number by 12 to convert it to feet (e.g., 4\" depth becomes 0.33 feet)."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Multiply Area by Depth",
+          "text": "Multiply your square footage by the decimal depth in feet to get the total volume in Cubic Feet."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Convert to Cubic Yards",
+          "text": "Divide the total cubic feet by 27 (since there are 27 cubic feet in one cubic yard)."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Apply Waste Buffer",
+          "text": "Standard building practice recommends adding a 10% buffer to account for grade variations, minor spills, and subgrade compaction."
         }
       ]
     }
@@ -208,9 +262,9 @@
                     C
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold tracking-tight flex items-center gap-2" :class="darkMode ? 'text-white' : 'text-slate-900'">
+                    <div class="text-xl font-bold tracking-tight flex items-center gap-2" :class="darkMode ? 'text-white' : 'text-slate-900'">
                         CONCRETE ESTIMATOR <span class="bg-orange-100 dark:bg-orange-950/50 text-orange-700 dark:text-orange-400 text-xs font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">US Standard</span>
-                    </h1>
+                    </div>
                     <p class="text-xs" :class="darkMode ? 'text-slate-400' : 'text-slate-500'">Precision slab & material calculator</p>
                 </div>
             </div>
@@ -246,29 +300,26 @@
     </div>
 
     <!-- Mode Selection Tabs -->
-    <div class="flex border border-slate-200 dark:border-slate-700 mb-6 bg-slate-100/80 dark:bg-slate-950 p-1.5 rounded-xl max-w-xl mx-auto no-print">
-        <button 
-            @click="mode = 'slab'" 
-            class="flex-1 py-2.5 px-4 rounded-lg text-sm font-bold transition-all duration-200"
-            :class="mode === 'slab' ? 'bg-white dark:bg-slate-800 text-orange-600 dark:text-orange-400 shadow-sm' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'"
+    <nav class="flex border border-slate-200 dark:border-slate-700 mb-6 bg-slate-100/80 dark:bg-slate-950 p-1.5 rounded-xl max-w-xl mx-auto no-print">
+        <a 
+            href="./index.html" 
+            class="flex-1 py-2.5 px-4 rounded-lg text-sm font-bold text-center bg-white dark:bg-slate-800 text-orange-600 dark:text-orange-400 shadow-sm transition-all duration-200"
         >
             Slab
-        </button>
-        <button 
-            @click="mode = 'curb'" 
-            class="flex-1 py-2.5 px-4 rounded-lg text-sm font-bold transition-all duration-200"
-            :class="mode === 'curb' ? 'bg-white dark:bg-slate-800 text-orange-600 dark:text-orange-400 shadow-sm' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'"
+        </a>
+        <a 
+            href="./concrete-curb-gutter-calculator/index.html" 
+            class="flex-1 py-2.5 px-4 rounded-lg text-sm font-bold text-center text-slate-500 hover:text-slate-900 dark:hover:text-white transition-all duration-200"
         >
             Curb & Gutter
-        </button>
-        <button 
-            @click="mode = 'circular'" 
-            class="flex-1 py-2.5 px-4 rounded-lg text-sm font-bold transition-all duration-200"
-            :class="mode === 'circular' ? 'bg-white dark:bg-slate-800 text-orange-600 dark:text-orange-400 shadow-sm' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'"
+        </a>
+        <a 
+            href="./circular-slab-calculator/index.html" 
+            class="flex-1 py-2.5 px-4 rounded-lg text-sm font-bold text-center text-slate-500 hover:text-slate-900 dark:hover:text-white transition-all duration-200"
         >
             Circular Slab
-        </button>
-    </div>
+        </a>
+    </nav>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
@@ -642,9 +693,9 @@
     <!-- SEO Article & FAQ Section -->
     <section class="no-print mt-12 space-y-8">
         <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 text-slate-800 dark:text-slate-200 transition-colors duration-200">
-            <h2 class="text-2xl font-bold tracking-tight mb-4 text-slate-900 dark:text-white uppercase border-b border-slate-100 dark:border-slate-700 pb-2">
+            <h1 class="text-2xl font-bold tracking-tight mb-4 text-slate-900 dark:text-white uppercase border-b border-slate-100 dark:border-slate-700 pb-2">
                 How to Calculate Concrete Slab Yardage
-            </h2>
+            </h1>
             <div class="prose max-w-none space-y-4 text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
                 <p>
                     Calculating the volume of concrete needed for a construction slab is a critical step in project budgeting and scheduling. In the United States, concrete is measured and purchased in <span class="text-slate-900 dark:text-white font-bold">Cubic Yards</span> (often abbreviated as "yards" or "yd³"). 
@@ -663,6 +714,92 @@
                     <li><strong class="text-slate-900 dark:text-white">Convert to Cubic Yards:</strong> Divide the total cubic feet by 27 (since there are 27 cubic feet in one cubic yard).</li>
                     <li><strong class="text-slate-900 dark:text-white">Apply Waste Buffer:</strong> Standard building practice recommends adding a 10% buffer to account for grade variations, minor spills, and subgrade compaction.</li>
                 </ol>
+            </div>
+        </div>
+
+        <!-- Quick Reference Section -->
+        <div class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 text-slate-800 dark:text-slate-200 transition-colors duration-200">
+            <h2 class="text-2xl font-bold tracking-tight mb-4 text-slate-900 dark:text-white uppercase border-b border-slate-100 dark:border-slate-700 pb-2">
+                Quick Reference: Concrete Slab Sizes & Material Needs
+            </h2>
+            <p class="text-sm text-slate-600 dark:text-slate-300 mb-6">
+                Planning a project? Below is a quick-glance table outlining concrete volume, bag requirements, and estimated costs for popular slab sizes. Note that these calculations include a standard 10% waste buffer.
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">
+                            <th class="py-3 px-4 font-bold uppercase tracking-wider text-xs">Slab Size (ft)</th>
+                            <th class="py-3 px-4 font-bold uppercase tracking-wider text-xs">Depth</th>
+                            <th class="py-3 px-4 font-bold uppercase tracking-wider text-xs">Cubic Yards</th>
+                            <th class="py-3 px-4 font-bold uppercase tracking-wider text-xs">80 lb Bags Needed</th>
+                            <th class="py-3 px-4 font-bold uppercase tracking-wider text-xs">60 lb Bags Needed</th>
+                            <th class="py-3 px-4 font-bold uppercase tracking-wider text-xs">Approx Material Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                            <td class="py-3 px-4">
+                                <a href="./calculator/index.html?length=8&width=8&depth=4" class="text-orange-500 hover:underline font-semibold">8' x 8' Patio</a>
+                            </td>
+                            <td class="py-3 px-4 font-medium">4"</td>
+                            <td class="py-3 px-4">0.88 yd³</td>
+                            <td class="py-3 px-4">40 Bags</td>
+                            <td class="py-3 px-4">53 Bags</td>
+                            <td class="py-3 px-4 font-semibold text-orange-600 dark:text-orange-400">$110–$135</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                            <td class="py-3 px-4">
+                                <a href="./10x10-concrete-slab-calculator/index.html" class="text-orange-500 hover:underline font-semibold">10' x 10' Patio</a>
+                            </td>
+                            <td class="py-3 px-4 font-medium">4"</td>
+                            <td class="py-3 px-4">1.36 yd³</td>
+                            <td class="py-3 px-4">62 Bags</td>
+                            <td class="py-3 px-4">82 Bags</td>
+                            <td class="py-3 px-4 font-semibold text-orange-600 dark:text-orange-400">$170–$205</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                            <td class="py-3 px-4">
+                                <a href="./12x12-concrete-slab-calculator/index.html" class="text-orange-500 hover:underline font-semibold">12' x 12' Shed Pad</a>
+                            </td>
+                            <td class="py-3 px-4 font-medium">4"</td>
+                            <td class="py-3 px-4">1.96 yd³</td>
+                            <td class="py-3 px-4">88 Bags</td>
+                            <td class="py-3 px-4">118 Bags</td>
+                            <td class="py-3 px-4 font-semibold text-orange-600 dark:text-orange-400">$245–$295</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                            <td class="py-3 px-4">
+                                <a href="./12x16-concrete-slab-calculator/index.html" class="text-orange-500 hover:underline font-semibold">12' x 16' Slab</a>
+                            </td>
+                            <td class="py-3 px-4 font-medium">4"</td>
+                            <td class="py-3 px-4">2.60 yd³</td>
+                            <td class="py-3 px-4">117 Bags</td>
+                            <td class="py-3 px-4">156 Bags</td>
+                            <td class="py-3 px-4 font-semibold text-orange-600 dark:text-orange-400">$325–$390</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                            <td class="py-3 px-4">
+                                <a href="./20x20-concrete-slab-calculator/index.html" class="text-orange-500 hover:underline font-semibold">20' x 20' Driveway</a>
+                            </td>
+                            <td class="py-3 px-4 font-medium">6"</td>
+                            <td class="py-3 px-4">8.15 yd³</td>
+                            <td class="py-3 px-4">367 Bags</td>
+                            <td class="py-3 px-4">489 Bags</td>
+                            <td class="py-3 px-4 font-semibold text-orange-600 dark:text-orange-400">$1,020–$1,220</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                            <td class="py-3 px-4">
+                                <a href="./24x24-garage-slab-calculator/index.html" class="text-orange-500 hover:underline font-semibold">24' x 24' Garage Slab</a>
+                            </td>
+                            <td class="py-3 px-4 font-medium">4"</td>
+                            <td class="py-3 px-4">7.82 yd³</td>
+                            <td class="py-3 px-4">352 Bags</td>
+                            <td class="py-3 px-4">470 Bags</td>
+                            <td class="py-3 px-4 font-semibold text-orange-600 dark:text-orange-400">$980–$1,180</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -740,23 +877,120 @@
         <div class="mt-8 text-center text-xs text-slate-500">
             Thank you for using the Pro Slab Concrete & Material Estimator. Check local hardware store pricing prior to purchase.
         </div>
-    </div>
+    <!-- Related Concrete Calculators Section -->
+    <section class="no-print mt-12">
+        <div class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 text-slate-800 dark:text-slate-200 transition-colors duration-200">
+            <h2 class="text-2xl font-bold tracking-tight mb-6 text-slate-900 dark:text-white uppercase border-b border-slate-100 dark:border-slate-700 pb-2">
+                Related Concrete Calculators
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <a href="./index.html" class="p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-orange-500 dark:hover:border-orange-500 bg-slate-50 dark:bg-slate-900 transition-all group flex flex-col justify-between">
+                    <div>
+                        <span class="block font-bold text-slate-900 dark:text-white group-hover:text-orange-500 transition-colors">Slab Calculator</span>
+                        <span class="block text-xs text-slate-500 dark:text-slate-400 mt-1">Estimate general slab dimensions, concrete bags, and cost.</span>
+                    </div>
+                    <span class="text-orange-500 text-xs font-semibold mt-3 inline-flex items-center gap-1">Open Tool &rarr;</span>
+                </a>
+                <a href="./concrete-patio-calculator/index.html" class="p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-orange-500 dark:hover:border-orange-500 bg-slate-50 dark:bg-slate-900 transition-all group flex flex-col justify-between">
+                    <div>
+                        <span class="block font-bold text-slate-900 dark:text-white group-hover:text-orange-500 transition-colors">Patio Calculator</span>
+                        <span class="block text-xs text-slate-500 dark:text-slate-400 mt-1">Estimate material needs for residential patios at 4" depth.</span>
+                    </div>
+                    <span class="text-orange-500 text-xs font-semibold mt-3 inline-flex items-center gap-1">Open Tool &rarr;</span>
+                </a>
+                <a href="./concrete-driveway-calculator/index.html" class="p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-orange-500 dark:hover:border-orange-500 bg-slate-50 dark:bg-slate-900 transition-all group flex flex-col justify-between">
+                    <div>
+                        <span class="block font-bold text-slate-900 dark:text-white group-hover:text-orange-500 transition-colors">Driveway Calculator</span>
+                        <span class="block text-xs text-slate-500 dark:text-slate-400 mt-1">Calculate volume and bags for heavy vehicle driveway load specs.</span>
+                    </div>
+                    <span class="text-orange-500 text-xs font-semibold mt-3 inline-flex items-center gap-1">Open Tool &rarr;</span>
+                </a>
+                <a href="./concrete-footing-calculator/index.html" class="p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-orange-500 dark:hover:border-orange-500 bg-slate-50 dark:bg-slate-900 transition-all group flex flex-col justify-between">
+                    <div>
+                        <span class="block font-bold text-slate-900 dark:text-white group-hover:text-orange-500 transition-colors">Footing Calculator</span>
+                        <span class="block text-xs text-slate-500 dark:text-slate-400 mt-1">Calculate deck, wall, and structural footing pour yards.</span>
+                    </div>
+                    <span class="text-orange-500 text-xs font-semibold mt-3 inline-flex items-center gap-1">Open Tool &rarr;</span>
+                </a>
+                <a href="./calculator/index.html" class="p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-orange-500 dark:hover:border-orange-500 bg-slate-50 dark:bg-slate-900 transition-all group flex flex-col justify-between">
+                    <div>
+                        <span class="block font-bold text-slate-900 dark:text-white group-hover:text-orange-500 transition-colors">Dynamic Calculator</span>
+                        <span class="block text-xs text-slate-500 dark:text-slate-400 mt-1">Open calculator with customizable dynamic dimensions.</span>
+                    </div>
+                    <span class="text-orange-500 text-xs font-semibold mt-3 inline-flex items-center gap-1">Open Tool &rarr;</span>
+                </a>
+            </div>
+        </div>
+    </section>
     </main>
 
     <!-- Footer -->
-    <footer 
-        class="no-print border-t py-8 px-6 text-center text-xs space-y-3 shadow-inner transition-colors duration-200"
-        :class="darkMode ? 'border-slate-700 bg-slate-850 text-slate-400' : 'border-slate-200 bg-white text-slate-500'"
+    <footer
+        class="no-print border-t mt-10 transition-colors duration-200"
+        :class="darkMode ? 'border-slate-700 bg-slate-900 text-slate-400' : 'border-slate-200 bg-slate-50 text-slate-500'"
     >
-        <p>© 2026 Pro Concrete Slab Estimator. Modern & High-Readability Layout.</p>
-        <p class="max-w-2xl mx-auto opacity-75 leading-relaxed">
-            <strong>Disclaimer:</strong> Calculations are estimations only. Local building code requirements, subgrade conditions, and environmental factors can vary. Always consult with a licensed contractor or local building inspector prior to pouring.
-        </p>
-        <div class="flex justify-center gap-4 pt-2 border-t" :class="darkMode ? 'border-slate-700' : 'border-slate-100'">
-            <a href="#" class="hover:text-orange-500 transition-colors">Privacy Policy</a>
-            <span>•</span>
-            <a href="#" class="hover:text-orange-500 transition-colors font-semibold">Terms of Service</a>
+        <!-- Top footer bar -->
+        <div class="max-w-4xl mx-auto px-6 py-8 flex flex-col items-center gap-5">
+
+            <!-- Brand & Copyright -->
+            <div class="flex flex-col items-center gap-1">
+                <span class="text-sm font-bold tracking-wide" :class="darkMode ? 'text-slate-200' : 'text-slate-700'">
+                    🏗️ Pro Concrete &amp; Material Estimator
+                </span>
+                <span class="text-xs" :class="darkMode ? 'text-slate-500' : 'text-slate-400'">
+                    © 2026 All Rights Reserved.
+                </span>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-xs font-medium">
+                <a href="./privacy-policy/index.html" id="footer-privacy"
+                   class="transition-colors duration-150 hover:text-orange-500"
+                   :class="darkMode ? 'text-slate-400' : 'text-slate-500'">
+                    Privacy Policy
+                </a>
+                <span :class="darkMode ? 'text-slate-700' : 'text-slate-300'">|</span>
+                <a href="./terms-of-service/index.html" id="footer-terms"
+                   class="transition-colors duration-150 hover:text-orange-500"
+                   :class="darkMode ? 'text-slate-400' : 'text-slate-500'">
+                    Terms of Service
+                </a>
+                <span :class="darkMode ? 'text-slate-700' : 'text-slate-300'">|</span>
+                <a href="./concrete-curb-gutter-calculator/index.html" id="footer-curb"
+                   class="transition-colors duration-150 hover:text-orange-500"
+                   :class="darkMode ? 'text-slate-400' : 'text-slate-500'">
+                    Curb & Gutter Calculator
+                </a>
+                <span :class="darkMode ? 'text-slate-700' : 'text-slate-300'">|</span>
+                <a href="./circular-slab-calculator/index.html" id="footer-circular"
+                   class="transition-colors duration-150 hover:text-orange-500"
+                   :class="darkMode ? 'text-slate-400' : 'text-slate-500'">
+                    Circular Slab Calculator
+                </a>
+                <span :class="darkMode ? 'text-slate-700' : 'text-slate-300'">|</span>
+                <a href="./blog/concrete-mix-ratios-explained/index.html" id="footer-mix"
+                   class="transition-colors duration-150 hover:text-orange-500"
+                   :class="darkMode ? 'text-slate-400' : 'text-slate-500'">
+                    Mix Ratios
+                </a>
+                <span :class="darkMode ? 'text-slate-700' : 'text-slate-300'">|</span>
+                <a href="./blog/4-inch-vs-6-inch-slab-depth/index.html" id="footer-depth"
+                   class="transition-colors duration-150 hover:text-orange-500"
+                   :class="darkMode ? 'text-slate-400' : 'text-slate-500'">
+                    4" vs 6" Slab
+                </a>
+            </nav>
+
+            <!-- Disclaimer -->
+            <p class="text-center text-xs leading-relaxed max-w-xl"
+               :class="darkMode ? 'text-slate-600' : 'text-slate-400'">
+                <strong :class="darkMode ? 'text-slate-500' : 'text-slate-500'">Disclaimer:</strong>
+                All calculations are estimates only. Consult a licensed contractor before purchasing materials or beginning construction.
+            </p>
         </div>
+
+        <!-- Bottom accent line -->
+        <div class="h-1 w-full bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500 opacity-70"></div>
     </footer>
 
 </body>
