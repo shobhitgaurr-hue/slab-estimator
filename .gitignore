@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+automation/
+seen_posts_daily.txt
+.env
+.DS_Store

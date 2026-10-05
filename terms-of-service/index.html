@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service | Concrete & Material Estimator</title>
+    <meta name="description" content="Review the Terms of Service for slabestimator.org, including our estimate disclaimers and usage terms.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.slabestimator.org/terms-of-service/">
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'Inter', 'sans-serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body 
+    x-data="{
+        darkMode: localStorage.getItem('darkMode') === 'true',
+        toggleDarkMode() {
+            this.darkMode = !this.darkMode;
+            localStorage.setItem('darkMode', this.darkMode);
+        }
+    }"
+    :class="darkMode ? 'dark bg-slate-900 text-white' : 'bg-slate-50 text-slate-900'"
+    class="font-sans min-h-screen flex flex-col selection:bg-orange-500 selection:text-white transition-colors duration-200"
+>
+
+    <!-- Top Navigation Bar -->
+    <header 
+        class="border-b py-4 px-6 sticky top-0 z-50 shadow-sm transition-colors duration-200"
+        :class="darkMode ? 'border-slate-700 bg-slate-800/90 text-white' : 'border-slate-200 bg-white/80 text-slate-900'"
+        style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);"
+    >
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="../index.html" class="flex items-center gap-3 hover:opacity-90 transition-opacity">
+                <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center font-black text-white text-xl shadow-sm">
+                    C
+                </div>
+                <div>
+                    <span class="text-xl font-bold tracking-tight flex items-center gap-2" :class="darkMode ? 'text-white' : 'text-slate-900'">
+                        CONCRETE ESTIMATOR <span class="bg-orange-100 dark:bg-orange-950/50 text-orange-700 dark:text-orange-400 text-xs font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">US Standard</span>
+                    </span>
+                    <p class="text-xs" :class="darkMode ? 'text-slate-400' : 'text-slate-500'">Precision slab & material calculator</p>
+                </div>
+            </a>
+            <div class="flex items-center gap-4">
+                <nav class="flex items-center gap-4 text-sm font-semibold">
+                    <a href="../index.html" class="hover:text-orange-500 transition-colors">Calculator</a>
+                </nav>
+                <button 
+                    @click="toggleDarkMode()" 
+                    class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all border border-slate-200 dark:border-slate-600 flex items-center justify-center shadow-sm"
+                    aria-label="Toggle dark mode"
+                >
+                    <span x-show="darkMode" x-cloak>☀️</span>
+                    <span x-show="!darkMode" x-cloak>🌙</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+        <article class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 text-slate-800 dark:text-slate-200 transition-colors duration-200">
+            <h1 class="text-3xl font-bold tracking-tight mb-6 text-slate-900 dark:text-white uppercase border-b border-slate-100 dark:border-slate-700 pb-2">
+                Terms of Service
+            </h1>
+            <div class="prose max-w-none space-y-6 text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
+                <p>
+                    Welcome to <strong>slabestimator.org</strong>. By accessing or using our website, tools, and calculators, you agree to comply with and be bound by the following Terms of Service. If you do not agree to these terms, please do not use our site.
+                </p>
+                
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white uppercase mt-6 mb-2">1. Acceptance of Terms</h2>
+                <p>
+                    By using this website, you represent that you are at least 18 years of age or are accessing the site under the supervision of a parent or guardian. These Terms of Service apply to all users of the site, including without limitation users who are browsers, vendors, customers, merchants, and/ or contributors of content.
+                </p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white uppercase mt-6 mb-2">2. Use of the Calculators & Tools</h2>
+                <p>
+                    The estimation and calculation tools provided on slabestimator.org are designed to assist you in planning concrete projects (such as slabs, curb and gutter, circular structures, and mix ratios). 
+                </p>
+                <p>
+                    All calculations, formulas, output numbers, bag counts, cost estimations, and materials estimates generated by these tools are for educational, planning, and informational purposes only. They do not constitute professional engineering, architectural, structural design, or licensed contractor advice. 
+                </p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white uppercase mt-6 mb-2">3. Accuracy & Estimates Disclaimer</h2>
+                <div class="bg-orange-50 dark:bg-orange-950/20 border-l-4 border-orange-500 p-4 rounded-r-xl">
+                    <p class="font-bold text-orange-900 dark:text-orange-300 uppercase text-xs mb-1">Important Liability Notice:</p>
+                    <p class="text-slate-700 dark:text-slate-300">
+                        While we strive to ensure that calculations are based on standard contractor methods and formulas, actual material requirements on site will vary based on weather, subgrade compaction, soil conditions, framing accuracy, concrete slump/wetness, and specific construction methods. <strong>Slabestimator.org, its owners, developers, and affiliates are not liable for any discrepancies, material shortages, over-ordering, cost overruns, delay of works, or damages resulting from the use of these calculations.</strong> Always consult a licensed contractor or local building department before purchasing materials or starting any construction work.
+                    </p>
+                </div>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white uppercase mt-6 mb-2">4. User Conduct</h2>
+                <p>You agree not to use the website or its tools to:</p>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>Violate any local, national, or international laws or regulations.</li>
+                    <li>Attempt to interfere with or disrupt the operation of the website, its servers, or networks.</li>
+                    <li>Scrape, crawl, extract data, or copy calculation formulas programmatically without our express prior written permission.</li>
+                    <li>Distribute malware, viruses, or any other harmful code.</li>
+                </ul>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white uppercase mt-6 mb-2">5. Intellectual Property</h2>
+                <p>
+                    All content, design systems, HTML/CSS code, customized calculators, visual styles, brand name, logo, graphics, and mathematical algorithms used on this website are the property of slabestimator.org and are protected by copyright, trademark, and other intellectual property laws. You may not copy, modify, distribute, reproduce, or republish any part of this site without prior written consent from us.
+                </p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white uppercase mt-6 mb-2">6. Limitation of Liability</h2>
+                <p>
+                    In no event shall slabestimator.org, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the website; (ii) any content obtained from the website; and (iii) unauthorized access, use, or alteration of your transmissions or content.
+                </p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white uppercase mt-6 mb-2">7. Disclaimer of Warranties</h2>
+                <p>
+                    This website is provided "as is" and "as available" without any representations or warranties, express or implied. We do not warrant that the website will always be online, secure, error-free, uninterrupted, or free of viruses or other harmful components.
+                </p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white uppercase mt-6 mb-2">8. Changes to Terms</h2>
+                <p>
+                    We reserve the right, at our sole discretion, to modify or replace these Terms of Service at any time. Any changes will be posted directly to this page, and your continued use of the website following any changes constitutes acceptance of those new terms.
+                </p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white uppercase mt-6 mb-2">9. Governing Law</h2>
+                <p>
+                    These Terms of Service are governed by and construed in accordance with the laws of the United States. Any disputes arising out of the use of this site shall be subject to the exclusive jurisdiction of the state and federal courts.
+                </p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white uppercase mt-6 mb-2">10. Contact Us</h2>
+                <p>
+                    If you have questions or require more information about these Terms of Service, please contact us.
+                </p>
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="border-t mt-10 transition-colors duration-200"
+        :class="darkMode ? 'border-slate-700 bg-slate-900 text-slate-400' : 'border-slate-200 bg-slate-50 text-slate-500'"
+    >
+        <div class="max-w-4xl mx-auto px-6 py-8 flex flex-col items-center gap-5">
+            <div class="flex flex-col items-center gap-1">
+                <span class="text-sm font-bold tracking-wide" :class="darkMode ? 'text-slate-200' : 'text-slate-700'">
+                    🏗️ Pro Concrete &amp; Material Estimator
+                </span>
+                <span class="text-xs" :class="darkMode ? 'text-slate-500' : 'text-slate-400'">
+                    © 2026 All Rights Reserved.
+                </span>
+            </div>
+
+            <nav class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-xs font-medium">
+                <a href="../privacy-policy/index.html" class="transition-colors duration-150 hover:text-orange-500" :class="darkMode ? 'text-slate-400' : 'text-slate-500'">
+                    Privacy Policy
+                </a>
+                <span :class="darkMode ? 'text-slate-700' : 'text-slate-300'">|</span>
+                <a href="./index.html" class="transition-colors duration-150 hover:text-orange-500 text-orange-500">
+                    Terms of Service
+                </a>
+            </nav>
+
+            <p class="text-center text-xs leading-relaxed max-w-xl" :class="darkMode ? 'text-slate-600' : 'text-slate-400'">
+                <strong>Disclaimer:</strong>
+                All calculations are estimates only. Consult a licensed contractor before purchasing materials or beginning construction.
+            </p>
+        </div>
+        <div class="h-1 w-full bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500 opacity-70"></div>
+    </footer>
+
+</body>
+</html>
