@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4-Inch vs 6-Inch Concrete Slab Depth – Slabs, Driveways & Uses</title>
+    <meta name="description" content="Compare 4-inch vs 6-inch concrete slab depth. Learn when to use 4 inches or 6 inches, cost differences, weight loads, and standard construction codes.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.slabestimator.org/blog/4-inch-vs-6-inch-slab-depth/">
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'Inter', 'sans-serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body 
+    x-data="{
+        darkMode: localStorage.getItem('darkMode') === 'true',
+        toggleDarkMode() {
+            this.darkMode = !this.darkMode;
+            localStorage.setItem('darkMode', this.darkMode);
+        }
+    }"
+    :class="darkMode ? 'dark bg-slate-900 text-white' : 'bg-slate-50 text-slate-900'"
+    class="font-sans min-h-screen flex flex-col selection:bg-orange-500 selection:text-white transition-colors duration-200"
+>
+
+    <!-- Top Navigation Bar -->
+    <header 
+        class="border-b py-4 px-6 sticky top-0 z-50 shadow-sm transition-colors duration-200"
+        :class="darkMode ? 'border-slate-700 bg-slate-800/90 text-white' : 'border-slate-200 bg-white/80 text-slate-900'"
+        style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);"
+    >
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="../../index.html" class="flex items-center gap-3 hover:opacity-90 transition-opacity">
+                <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center font-black text-white text-xl shadow-sm">
+                    C
+                </div>
+                <div>
+                    <div class="text-xl font-bold tracking-tight flex items-center gap-2" :class="darkMode ? 'text-white' : 'text-slate-900'">
+                        CONCRETE ESTIMATOR <span class="bg-orange-100 dark:bg-orange-950/50 text-orange-700 dark:text-orange-400 text-xs font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">US Standard</span>
+                    </div>
+                    <p class="text-xs" :class="darkMode ? 'text-slate-400' : 'text-slate-500'">Precision slab & material calculator</p>
+                </div>
+            </a>
+            <div class="flex items-center gap-4">
+                <nav class="flex items-center gap-4 text-sm font-semibold">
+                    <a href="../../index.html" class="hover:text-orange-500 transition-colors">Calculator</a>
+                </nav>
+                <button 
+                    @click="toggleDarkMode()" 
+                    class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all border border-slate-200 dark:border-slate-600 flex items-center justify-center shadow-sm"
+                    aria-label="Toggle dark mode"
+                >
+                    <span x-show="darkMode" x-cloak>☀️</span>
+                    <span x-show="!darkMode" x-cloak>🌙</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+        <article class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 text-slate-800 dark:text-slate-200 transition-colors duration-200">
+            <header class="mb-6 border-b border-slate-100 dark:border-slate-700 pb-4">
+                <div class="flex items-center gap-2 text-xs font-bold uppercase text-orange-500 tracking-wider mb-2">
+                    <span>Educational Guide</span>
+                    <span>•</span>
+                    <span>August 2026</span>
+                </div>
+                <h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white uppercase leading-tight">
+                    4-Inch vs 6-Inch Concrete Slab Depth: Comparison Guide
+                </h1>
+            </header>
+
+            <div class="prose max-w-none space-y-6 text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
+                <p>
+                    When preparing to pour concrete for a residential or light commercial project, one of the most critical decisions is determining the correct <strong>slab thickness</strong>. The thickness of a concrete slab directly dictates its load capacity, overall lifespan, structural reinforcement requirements, and project costs.
+                </p>
+                <p>
+                    In the building industry, the two most common depths for standard concrete slabs are <strong>4 inches (10 cm)</strong> and <strong>6 inches (15 cm)</strong>. Choosing the wrong depth can lead to premature cracking under heavy loads, or unnecessary material costs.
+                </p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white uppercase mt-8 mb-3">Quick Comparison</h2>
+                <div class="overflow-x-auto my-6 border border-slate-200 dark:border-slate-700 rounded-xl">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-slate-200 uppercase tracking-wider font-bold">
+                                <th class="p-3 border-b border-slate-200 dark:border-slate-700">Feature</th>
+                                <th class="p-3 border-b border-slate-200 dark:border-slate-700">4-Inch Concrete Slab</th>
+                                <th class="p-3 border-b border-slate-200 dark:border-slate-700">6-Inch Concrete Slab</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-slate-200 dark:border-slate-700">
+                                <td class="p-3 font-bold">Typical Use Cases</td>
+                                <td class="p-3 text-slate-500 dark:text-slate-400">Patios, sidewalks, walkways, hot tub pads, small garden sheds.</td>
+                                <td class="p-3 text-slate-500 dark:text-slate-400">Driveways, garage floors, heavy equipment pads, commercial walkways.</td>
+                            </tr>
+                            <tr class="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/20">
+                                <td class="p-3 font-bold">Load Class</td>
+                                <td class="p-3 text-slate-500 dark:text-slate-400">Light Duty (Pedestrian and light garden equipment only).</td>
+                                <td class="p-3 text-slate-500 dark:text-slate-400">Heavy Duty (Passenger cars, pickup trucks, heavy machinery).</td>
+                            </tr>
+                            <tr class="border-b border-slate-200 dark:border-slate-700">
+                                <td class="p-3 font-bold">Reinforcement</td>
+                                <td class="p-3 text-slate-500 dark:text-slate-400">Welded wire mesh (6x6-W1.4/W1.4) or fiber mesh.</td>
+                                <td class="p-3 text-slate-500 dark:text-slate-400">Steel rebar grids (typically #3 or #4 rebar spaced at 12" to 16").</td>
+                            </tr>
+                            <tr class="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/20">
+                                <td class="p-3 font-bold">Relative Cost</td>
+                                <td class="p-3 font-semibold text-emerald-600 dark:text-emerald-400">Base Cost (standard volume requirement)</td>
+                                <td class="p-3 font-semibold text-orange-600 dark:text-orange-400">+50% more concrete material volume</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white uppercase mt-8 mb-3">When to Use 4 Inches</h2>
+                <p>
+                    A 4-inch concrete slab is the standard minimum for residential concrete slabs. It is suitable for applications where the only traffic will be foot traffic or static light loads. If you are constructing a standard garden walkway, a patio for lawn furniture, or a pad for a small wooden shed, 4 inches is highly cost-effective and structurally sufficient, provided the subgrade is compacted and stable.
+                </p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white uppercase mt-8 mb-3">When to Use 6 Inches</h2>
+                <p>
+                    A 6-inch concrete slab is required for driveways, parking pads, garage floors, and storage areas for heavy machinery. Passenger vehicles, SUV, and delivery trucks exert significant localized pressure on concrete. A 4-inch slab under a heavy vehicle can crack or subside over time, especially at corners or joints. Increasing the slab thickness to 6 inches increases its load-bearing capacity by approximately 2.25 times compared to a 4-inch slab.
+                </p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white uppercase mt-8 mb-3">Cost Implications</h2>
+                <p>
+                    Because concrete is sold by volume (cubic yards), going from a 4-inch depth to a 6-inch depth increases the concrete volume requirement by exactly **50%**. For a 20' x 20' driveway (400 sq. ft.):
+                </p>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li>At <strong class="text-slate-900 dark:text-white">4" depth:</strong> requires approx. 5.4 cubic yards (with buffer).</li>
+                    <li>At <strong class="text-slate-900 dark:text-white">6" depth:</strong> requires approx. 8.1 cubic yards (with buffer).</li>
+                </ul>
+                <p>
+                    This results in an extra 2.7 cubic yards of concrete, which can add significant cost depending on local concrete delivery rates. However, investing in the extra depth upfront prevents expensive slab replacement costs later.
+                </p>
+
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white uppercase mt-8 mb-3">Related Guides</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                    <a href="../concrete-mix-ratios-explained/index.html" class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-orange-500 transition-all flex flex-col justify-between">
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Previous Article</span>
+                        <span class="text-sm font-bold text-slate-950 dark:text-white mt-1">Concrete Mix Ratios Explained & PSI Guide</span>
+                    </a>
+                    <a href="../../index.html" class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-orange-500 transition-all flex flex-col justify-between">
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Tool</span>
+                        <span class="text-sm font-bold text-slate-950 dark:text-white mt-1">Calculate Slabs & Bags Online 🏗️</span>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="border-t mt-10 transition-colors duration-200"
+        :class="darkMode ? 'border-slate-700 bg-slate-900 text-slate-400' : 'border-slate-200 bg-slate-50 text-slate-500'"
+    >
+        <div class="max-w-4xl mx-auto px-6 py-8 flex flex-col items-center gap-5">
+            <div class="flex flex-col items-center gap-1">
+                <span class="text-sm font-bold tracking-wide" :class="darkMode ? 'text-slate-200' : 'text-slate-700'">
+                    🏗️ Pro Concrete &amp; Material Estimator
+                </span>
+                <span class="text-xs" :class="darkMode ? 'text-slate-500' : 'text-slate-400'">
+                    © 2026 All Rights Reserved.
+                </span>
+            </div>
+
+            <nav class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-xs font-medium">
+                <a href="../../privacy-policy/index.html" class="transition-colors duration-150 hover:text-orange-500" :class="darkMode ? 'text-slate-400' : 'text-slate-500'">
+                    Privacy Policy
+                </a>
+                <span :class="darkMode ? 'text-slate-700' : 'text-slate-300'">|</span>
+                <a href="../../terms-of-service/index.html" class="transition-colors duration-150 hover:text-orange-500" :class="darkMode ? 'text-slate-400' : 'text-slate-500'">
+                    Terms of Service
+                </a>
+            </nav>
+
+            <p class="text-center text-xs leading-relaxed max-w-xl" :class="darkMode ? 'text-slate-600' : 'text-slate-400'">
+                <strong>Disclaimer:</strong>
+                All calculations are estimates only. Consult a licensed contractor before purchasing materials or beginning construction.
+            </p>
+        </div>
+        <div class="h-1 w-full bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500 opacity-70"></div>
+    </footer>
+
+</body>
+</html>
